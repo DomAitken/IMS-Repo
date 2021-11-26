@@ -30,9 +30,9 @@ public class DBUtils {
 		} catch (Exception e) {
 			LOGGER.error(e);
 		}
-		this.dbUrl = dbProps.getProperty("db.url", "");
-		this.dbUser = dbProps.getProperty("db.user", "");
-		this.dbPassword = dbProps.getProperty("db.password", "");
+		this.dbUrl = dbProps.getProperty("db.url", "jdbc:mysql://localhost:3306/?user=root");
+		this.dbUser = dbProps.getProperty("db.user", "root");
+		this.dbPassword = dbProps.getProperty("db.password", "root");
 	}
 
 	public DBUtils() {
@@ -53,7 +53,7 @@ public class DBUtils {
 		int modified = 0;
 		try (Connection connection = this.getConnection();
 				BufferedReader br = new BufferedReader(new FileReader(file));) {
-			String fileAsString = br.lines().reduce((acc, next) -> acc + next).orElse("");
+			String fileAsString = br.lines().reduce((acc, next) -> acc + next).orElse("Fail.");
 			String[] queries = fileAsString.split(";");
 			modified += Stream.of(queries).map(string -> {
 				try (Statement statement = connection.createStatement();) {
